@@ -12,10 +12,18 @@
         <nav>
             <ul>
                 <li>
-                    <a href="/">Inicio</a>
+                    <!-- <a href="/">Inicio</a> -->
+                     <a href="{{ url_for('home') }}">Inicio</a>
                 </li>
                 <li>
-                    <a href="/saludo/amigo">Saluda</a>
+                    <!-- <a href="/saludo/amigo">Saluda</a> hacer esto dinamico -->
+                    <!--lo hacemos con urlfor en la pagina princi-->
+                    <!-- le tenemos que pasar el nombre de la funcion, y si la funcion
+                    necesita un parametro, tambien se lo debemos pasar -->
+                    <a href="{{ url_for('saludo', name='invitado') }}">Saluda</a>
+                </li>
+                <li>
+                     <a href="{{ url_for('catalogo') }}">catalogo</a>
                 </li>
             </ul>
         </nav>
@@ -26,7 +34,9 @@
         <h1>Contenido de mi pagina</h1>
         {% endblock %}
     </main>
+
     <footer>
+        <hr>
         <p>2026&copy;IES las Galletas</p>
     </footer>
 </body>

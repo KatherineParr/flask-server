@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Catalogo</h1>
+{% extends 'base.html' %}
 
-    <h2>Nombre: {{nombre}}</h2>
+{% block content %}
 
-    <p>Mostrando el producto con id = {{id_product}}</p>
+<h1>Catalogo</h1>
 
-    <h3>Listado de productos</h3>
-    <ul>
-        {% for producto in lista_productos %}
-        <li>
-            <strong>{{} producto.nombre }</strong>
-            {{ producto.precio }}$
-            {% if producto.disponible %}
-            <span style="color: green;">En stock</span>
-            {% else %}
-            <span style="color: red;">Agotado</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+<h2>Nombre: {{nombre}}</h2>
 
-</body>
-</html>
+<h3>Listado de productos</h3>
+<ul>
+    {% for producto in lista_productos %}
+    <li>
+        <strong>                
+            <a href="{{ url_for('producto', idProducto = loop.index -1) }}">
+                {{ producto.nombre }}
+            </a>       
+        </strong>
+        {{ producto.precio }} $
+        {% if producto.disponible %}
+        <span style="color: green;">En stock</span>
+        {% else %}
+        <span style="color: red;">Agotado</span>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
