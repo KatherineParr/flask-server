@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mi App{% endblock %}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/basic.css') }}">
 </head>
 <body>
     <header>
@@ -23,7 +24,13 @@
                     <a href="{{ url_for('saludo', name='invitado') }}">Saluda</a>
                 </li>
                 <li>
-                     <a href="{{ url_for('catalogo') }}">catalogo</a>
+                    <a href="{{ url_for('catalogo') }}">catalogo</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('contacto') }}">contacto</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('filtrar') }}">Filtrar</a>
                 </li>
             </ul>
         </nav>

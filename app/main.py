@@ -1,13 +1,15 @@
-from flask import Flask, render_template, url_for
+from data.producto import productos
+from flask import Flask, render_template, request
+
+
+
+#lo de arriba es cargando librerias, y, en el arriba, de producto, se especifica 
+#la ruta del archivo, o sea, de donde se saca la info, y que info se saca
 
 # Inicializamos la aplicación
 app = Flask(__name__)
 
-productos = [
-    {"nombre": "Teclado Mecanico", "precio": 49.99, "disponible": True},
-    {"nombre": "Ratón Optico", "precio": 19.99, "disponible": False},
-    {"nombre": "Monitor 4K", "precio": 299.99, "disponible": True},
-]
+
 
 
 # Ruta 1: Devuelve un HTML muy básico
@@ -39,10 +41,37 @@ def catalogo():
 def producto(idProducto):
     return render_template("producto.html", idProducto=idProducto, producto=productos[idProducto])
 
+@app.route("/contacto", methods=["GET"])
+def contacto():
+    return render_template("contacto.html")
 
+@app.route("/contacto", methods=["POST"])
+def contacto_post():
+    nombre = request.form.get("nombre")
+    mensaje = request.form["mensaje"]
+    return render_template("contacto-datos.html", nombre=nombre, mensaje=mensaje)
+
+@app.route("/filtrar")
+def filtrar():
+    return render_template("filtrar.html")
+
+@app.route("/filtrar-datos", methods=["GET"])
+def filtrar_datos():
+    precio_min = request.args.get("precio_min", type=float)
+    print(f"Precio minimo: {precio_min}")
+    precio_max = request.args.get("precio_max", type=float)
+    print(f"Precio maximo: {precio_max}")
+    productos_filtrados = [
+        producto for producto in productos 
+        if producto["precio"] >= precio_min and producto["precio"] <= precio_max
+    ]
+    print(f"Productos filtrados: {productos_filtrados}")
+    #return render_template("filtrar-datos.html")
+    return render_template("catalogo.html", nombre="Filtrado", lista_productos=productos_filtrados)
 
 
 if __name__ == "__main__":
     # host='0.0.0.0' es VITAL en Docker para que el servidor sea accesible desde fuera del contenedor
     # debug=True hará que el servidor se reinicie automáticamente si cambias este archivo
     app.run(host="0.0.0.0", port=5000, debug=True)
+

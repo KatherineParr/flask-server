@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Filtrar{% endblock %}
+
+{% block content %}
+<h1>Filtrar productos</h1>
+<form action="{{ url_for('filtrar_datos') }}" method="get">
+    <p>Filtrar por precio</p>
+    <p>
+        <label for="precio_min">Precio minimo:</label>
+        <input type="number" id="precio_min" name="precio_min" step="10" value="0">
+    </p>
+    <p>
+        <label for="precio_max">Precio maximo:</label>
+        <input type="number" id="precio_min" name="precio_max" step="10" value="0">
+    </p>
+    <p>
+        <input type="submit" value="Filtrar">
+    </p>
+</form>
+
+{% endblock %}
