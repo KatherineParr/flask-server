@@ -1,14 +1,16 @@
 from data.producto import productos
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect, abort
+from form import LoginForm
 
-
+#NOTA PARA SELF, SI CARGA UNA NUEVA PAGINA O COSA CON F12, ES LADO SERVIDOR
+#SI NO CARGA NADA NUEVO NI CAMBIA DE PAGINA ES LADO DE CLIENTE
 
 #lo de arriba es cargando librerias, y, en el arriba, de producto, se especifica 
 #la ruta del archivo, o sea, de donde se saca la info, y que info se saca
 
 # Inicializamos la aplicación
 app = Flask(__name__)
-
+app.config["SECRET_KEY"] = "clave"
 
 
 
@@ -39,6 +41,11 @@ def catalogo():
     
 @app.route("/catalogo/<int:idProducto>")
 def producto(idProducto):
+    #comprobar si esta debtro de la lista (pero como no definimos una id hay que hacerlo con un if)
+    # if idProducto not in productos:
+    
+    # if 0 <= idProducto < len(productos)
+    #     abort(404) #abortar si el id no esta en productos y redirige a 404
     return render_template("producto.html", idProducto=idProducto, producto=productos[idProducto])
 
 @app.route("/contacto", methods=["GET"])
@@ -68,6 +75,33 @@ def filtrar_datos():
     print(f"Productos filtrados: {productos_filtrados}")
     #return render_template("filtrar-datos.html")
     return render_template("catalogo.html", nombre="Filtrado", lista_productos=productos_filtrados)
+
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    form = LoginForm()
+
+    #validate compruenba si la peticion post y si se validan todos los campos
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        print(f"El usuario es {email} con la contraseña {password}")
+
+        return redirect(url_for('gracias'))
+    return render_template('login.html', form=form)
+
+@app.route("/gracias")
+def gracias():
+    return render_template("gracias.html")
+
+
+# para perzonalizar los errores para que no salgan 404 y otros
+@app.errorhandler(404)
+def pagina_no_encontrada(e):
+    return render_template('404.html'), 404
+
+
 
 
 if __name__ == "__main__":
