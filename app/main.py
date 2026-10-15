@@ -44,9 +44,10 @@ def producto(idProducto):
     #comprobar si esta debtro de la lista (pero como no definimos una id hay que hacerlo con un if)
     # if idProducto not in productos:
     
-    # if 0 <= idProducto < len(productos)
-    #     abort(404) #abortar si el id no esta en productos y redirige a 404
-    return render_template("producto.html", idProducto=idProducto, producto=productos[idProducto])
+    if 0 <= idProducto < len(productos):
+        return render_template("producto.html", idProducto=idProducto, producto=productos[idProducto])
+
+    abort(404) #abortar si el id no esta en productos y redirige a 404
 
 @app.route("/contacto", methods=["GET"])
 def contacto():
